@@ -12,6 +12,7 @@ const UserAuthForm = ({type}) => {
                 type != "sing-in" ?
                 <InputTag/> : ""
             }
+            <InputTag type="email"/>
         </form>
     </section>
   )
