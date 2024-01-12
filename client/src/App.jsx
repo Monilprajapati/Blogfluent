@@ -1,6 +1,6 @@
 const App = () => {
     return (
-        <h1>Blogfluent</h1>
+        <h1>Blogfluent-Blog Website</h1>
     )
 }
 
