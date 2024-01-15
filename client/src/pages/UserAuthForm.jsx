@@ -12,7 +12,6 @@ const UserAuthForm = ({type}) => {
                 type != "sing-in" ?
                 <InputTag/> : ""
             }
-            
         </form>
     </section>
   )
