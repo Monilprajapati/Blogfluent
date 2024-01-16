@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is blog website called blogfluent",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon index.js"
   },
