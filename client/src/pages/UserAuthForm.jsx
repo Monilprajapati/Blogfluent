@@ -1,17 +1,53 @@
 import React from "react";
+import { useState } from "react";
 import InputTag from "../components/InputTag";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
 
 const UserAuthForm = ({ type }) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
-  }
+    e.preventDefault();
 
+    const { email, password } = formData;
+    if (!email.length) {
+      return toast.error("Email is required");
+    }
+    if (!emailRegex.test(email)) {
+      return toast.error("Email is not valid");
+    }
+    if (type === "register") {
+      if (!formData.confirmPassword.length) {
+        return toast.error("Confirm Password is required");
+      }
+      if (formData.confirmPassword !== formData.password) {
+        return toast.error("Password and Confirm Password must be same");
+      }
+    }
+    if (!password.length) {
+      return toast.error("Password is required");
+    }
+    if (!passwordRegex.test(password)) {
+      return toast.error(
+        "Password must be between 6 to 20 characters and contain at least one numeric digit, one uppercase and one lowercase letter"
+      );
+    }
+  };
 
   return (
     <AnimationWrapper keyValue={type}>
@@ -48,9 +84,7 @@ const UserAuthForm = ({ type }) => {
             placeholder="Password"
             icon="password"
           />
-          <button className="btn-dark center mt-14"
-            onClick={handleSubmit}
-          >
+          <button className="btn-dark center mt-14" onClick={handleSubmit}>
             {type.replace("-", " ")}
           </button>
 
