@@ -5,12 +5,20 @@ import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
 
 const UserAuthForm = ({ type }) => {
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submit");
+  }
+
+
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
         <form className="w-[80%] max-h-[400px]">
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
-            {type === "sign-in" ? "Welcome back" : "Create an account"}
+            {type === "sign-in" ? "Welcome back" : "Welcome"}
           </h1>
           {type != "sing-in" ? (
             <InputTag
@@ -19,7 +27,7 @@ const UserAuthForm = ({ type }) => {
               id="username"
               value=""
               placeholder="Username"
-              icon="email"
+              icon="fullname"
             />
           ) : (
             ""
@@ -40,7 +48,9 @@ const UserAuthForm = ({ type }) => {
             placeholder="Password"
             icon="password"
           />
-          <button className="btn-dark center mt-14">
+          <button className="btn-dark center mt-14"
+            onClick={handleSubmit}
+          >
             {type.replace("-", " ")}
           </button>
 
