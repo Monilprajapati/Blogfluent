@@ -5,7 +5,7 @@
   import { FaEyeSlash } from "react-icons/fa";
   import { FaEye } from "react-icons/fa";
 
-  const InputTag = ({ name, type, id, value, placeholder, icon }) => {
+  const InputTag = ({ name, type, id, value, placeholder, icon, handleChange }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
       <>
@@ -33,6 +33,7 @@
             defaultValue={value}
             placeholder={placeholder}
             className="input-box"
+            onChange={handleChange}
           />
           {type == "password" ? (
             <div

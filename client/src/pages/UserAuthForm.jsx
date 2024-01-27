@@ -4,14 +4,15 @@ import InputTag from "../components/InputTag";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
-
+import { toast, Toaster } from "react-hot-toast";
+import authUser from "../services/auth";
 const UserAuthForm = ({ type }) => {
   const [formData, setFormData] = useState({
+    fullname: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
-
+  console.log(formData);
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
@@ -20,9 +21,33 @@ const UserAuthForm = ({ type }) => {
     console.log(formData);
   };
 
+  const userAuth = async (serverRoute, formData) => {
+    const data = await authUser(serverRoute, formData);
+    console.log("Data from userAuth ");
+    console.log(data);
+    if (data.error) {
+      toast.success(data.error);
+      // if (serverRoute === "login") {
+      //   setLoggedIn(true);
+      //   localStorage.setItem("token", data.data.token);
+      //   console.log("token " + data.data.token);
+      //   setTimeout(() => {
+      //     navigate("/");
+      //   }, 1200);
+      // } else {
+      //   setTimeout(() => {
+      //     navigate("/verify");
+      //   }, 1200);
+      // }
+    } else {
+      toast.error(data.error);
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     e.preventDefault();
+
+    let serverRoute = type === "sign-in" ? "signin" : "signup";
 
     const { email, password } = formData;
     if (!email.length) {
@@ -47,11 +72,16 @@ const UserAuthForm = ({ type }) => {
         "Password must be between 6 to 20 characters and contain at least one numeric digit, one uppercase and one lowercase letter"
       );
     }
+
+    if (password.length && email.length) {
+      userAuth(serverRoute, formData);
+    }
   };
 
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
+        <Toaster />
         <form className="w-[80%] max-h-[400px]">
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome back" : "Welcome"}
@@ -64,6 +94,7 @@ const UserAuthForm = ({ type }) => {
               value=""
               placeholder="Username"
               icon="fullname"
+              handleChange={handleChange}
             />
           ) : (
             ""
@@ -75,6 +106,7 @@ const UserAuthForm = ({ type }) => {
             value=""
             placeholder="Email"
             icon="email"
+            handleChange={handleChange}
           />
           <InputTag
             name="password"
@@ -83,6 +115,7 @@ const UserAuthForm = ({ type }) => {
             value=""
             placeholder="Password"
             icon="password"
+            handleChange={handleChange}
           />
           <button className="btn-dark center mt-14" onClick={handleSubmit}>
             {type.replace("-", " ")}

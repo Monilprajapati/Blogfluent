@@ -1,36 +1,20 @@
-const URL = import.meta.env.VITE_SERVER_URL;
+import axios from "axios";
 
-const register = async (userData) => {
+const authUser = async (serverRoute, formData) => {
+  const URL = import.meta.env.VITE_SERVER_URL;
+
   try {
-    const response = await fetch(`${URL}/auth/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
+    const response = await axios.post(
+      `${URL}/api/v1/auth/${serverRoute}`,
+      formData
+    );
+    const data = await response.data;
+    console.log(data);
+    return data;
+  } catch ({ response }) {
+    console.log(response);
+    return response.data;
   }
 };
 
-const login = async (userData, setLoggedIn) => {
-  try {
-    const response = await fetch(`${URL}/auth/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
-    const data = await response.json();
-    // const token = await data.token;
-
-    // localStorage.setItem("token", token);
-    // setToken(token);
-    setLoggedIn(true);
-
-    return { status: response.status, data: data };
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export { register, login };
+export default authUser;
