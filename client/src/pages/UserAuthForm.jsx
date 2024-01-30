@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
 import { toast, Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import authUser from "../services/auth";
 const UserAuthForm = ({ type }) => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const UserAuthForm = ({ type }) => {
     email: "",
     password: "",
   });
-  console.log(formData);
+  const navigate = useNavigate();
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
@@ -25,22 +26,24 @@ const UserAuthForm = ({ type }) => {
     const data = await authUser(serverRoute, formData);
     console.log("Data from userAuth ");
     console.log(data);
-    if (data.error) {
-      toast.success(data.error);
-      // if (serverRoute === "login") {
-      //   setLoggedIn(true);
-      //   localStorage.setItem("token", data.data.token);
-      //   console.log("token " + data.data.token);
-      //   setTimeout(() => {
-      //     navigate("/");
-      //   }, 1200);
-      // } else {
-      //   setTimeout(() => {
-      //     navigate("/verify");
-      //   }, 1200);
-      // }
+    if (serverRoute === "signin") {
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success("User Logged in successfully");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
     } else {
-      toast.error(data.error);
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success("User Registered successfully");
+        setTimeout(() => {
+          navigate("/signin");
+        }, 1000);
+      }
     }
   };
   const handleSubmit = (e) => {
@@ -86,9 +89,9 @@ const UserAuthForm = ({ type }) => {
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome back" : "Welcome"}
           </h1>
-          {type != "sing-in" ? (
+          {type != "sign-in" ? (
             <InputTag
-              name="username"
+              name="fullname"
               type="text"
               id="username"
               value=""
