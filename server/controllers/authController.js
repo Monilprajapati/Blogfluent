@@ -39,7 +39,7 @@ export const signin = async (req, res) => {
       });
     })
     .catch((err) => {
-      return res.status(403).json({ error: "Something went wrong" });
+      return res.status(403).json({ error: err.message });
     });
 };
 
@@ -88,7 +88,7 @@ export const signup = async (req, res) => {
         if (err.code === 11000) {
           return res.status(403).json({ error: "Email is already registered" });
         }
-        return res.status(403).json({ error: "Something went wrong" });
+        return res.status(403).json({ error : err.message});
       });
   });
 };

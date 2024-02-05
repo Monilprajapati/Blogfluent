@@ -24,7 +24,7 @@ const UserAuthForm = ({ type }) => {
 
   const userAuth = async (serverRoute, formData) => {
     const data = await authUser(serverRoute, formData);
-    console.log("Data from userAuth ");
+    // console.log("Data from userAuth ");
     // console.log(data);
     if (serverRoute === "signin") {
       if (data.error) {
