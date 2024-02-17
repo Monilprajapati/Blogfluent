@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import authUser from "../services/auth";
 import { useContext } from "react";
 import { UserContext } from "../App";
+import { authWithGoogle } from "../common/firebase";
 const UserAuthForm = ({ type }) => {
   const [formData, setFormData] = useState({
     fullname: "",
@@ -89,14 +90,34 @@ const UserAuthForm = ({ type }) => {
     }
   };
 
+  const handleGoogleAuth = (e) => {
+    e.preventDefault();
+
+    authWithGoogle()
+      .then((user) => {
+
+        let serverRoute = "google-auth"
+
+        let formData = {  
+          access_token : user.access_token
+        }
+
+        userAuth(serverRoute, formData);
+      })
+      .catch((err) => {
+        toast.error("trouble login with Google");
+        return console.log(err);
+      });
+  };
+
   return access_token ? (
     <Navigate to="/" />
   ) : (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
         <Toaster />
-        <form className="w-[80%] max-h-[400px]">
-          <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
+        <form className="max-h-[400px]">
+          <h1 className="text-4xl font-gelasio capitalize text-center mb-14">
             {type === "sign-in" ? "Welcome back" : "Welcome"}
           </h1>
           {type != "sign-in" ? (
@@ -141,7 +162,10 @@ const UserAuthForm = ({ type }) => {
           </div>
 
           {/* google button */}
-          <div className="btn-dark flex items-center justify-center gap-3">
+          <div
+            className="btn-dark flex items-center justify-center gap-3"
+            onClick={handleGoogleAuth}
+          >
             <FcGoogle className="text-[18px]" />
             {type.replace("-", " ")} with Google
           </div>

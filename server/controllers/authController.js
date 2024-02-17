@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import generateUsername from "../utils/generateUsername.js";
 import formatData from "../utils/formatData.js";
+import { getAuth } from "firebase-admin/auth";
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
@@ -88,7 +89,61 @@ export const signup = async (req, res) => {
         if (err.code === 11000) {
           return res.status(403).json({ error: "Email is already registered" });
         }
-        return res.status(403).json({ error : err.message});
+        return res.status(403).json({ error: err.message });
       });
   });
+};
+
+export const googleAuth = async (req, res) => {
+  let { access_token } = req.body;
+  getAuth()
+    .verifyIdToken(access_token)
+    .then(async (decodedToken) => {
+      let { email, name, picture } = decodedToken;
+      picture = picture.replace("s96-c", "s384-c");
+      let user = await User.findOne({ "personal_info.email": email })
+        .select(
+          "personal_info.fullname personal_info.username personal_info.profile_img google_auth"
+        )
+        .then((u) => {
+          return u || null;
+        })
+        .catch((err) => {
+          return res.status(500).json({ "error:": err.message });
+        });
+
+      if (user) {
+        if (!user.google_auth) {
+          return res.status(403).json({
+            error:
+              "Email is already registered with google please signup with password",
+          });
+        }
+      } else {
+        let username = await generateUsername(email);
+        user = new User({
+          personal_info: {
+            fullname: name,
+            email,
+            profile_img: picture,
+            username,
+          },
+          google_auth: true,
+        });
+        await user
+          .save()
+          .then((u) => {
+            user = u;
+          })
+          .catch((err) => {
+            return res.status(403).json({ error: err.message });
+          });
+
+          return res.status(200).json(formatData(user));
+      }
+    }).catch(
+      (err) => {
+        return res.status(403).json({ error: err.message });
+      }
+    )
 };
