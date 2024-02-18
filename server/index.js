@@ -3,11 +3,10 @@ import connectDB from "./db/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import admin from "firebase-admin"
-import serviceAccountKey from "./blog-fluent-firebase-adminsdk-mixb1-d6155942fd.json" assert { type: "json" };
+import {serviceAccountKey} from "./blog-fluent-firebase-adminsdk-mixb1-d6155942fd.js";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
-
 const { DB_USERNAME, DB_PASSWORD } = process.env;
 connectDB(DB_USERNAME, DB_PASSWORD);
 const corsOptions = {

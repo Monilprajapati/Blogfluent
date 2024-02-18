@@ -29,6 +29,7 @@ const UserAuthForm = ({ type }) => {
     setUserAuth,
   } = useContext(UserContext);
 
+  // Calling APIS and checking the status
   const userAuth = async (serverRoute, formData) => {
     const data = await authUser(serverRoute, formData);
     console.log("Data from userAuth ");
@@ -55,6 +56,7 @@ const UserAuthForm = ({ type }) => {
     }
   };
 
+  // Checking and validating inputs
   const handleSubmit = (e) => {
     e.preventDefault();
     e.preventDefault();
@@ -95,12 +97,12 @@ const UserAuthForm = ({ type }) => {
 
     authWithGoogle()
       .then((user) => {
-
+        console.log(user)
         let serverRoute = "google-auth"
-
         let formData = {  
-          access_token : user.access_token
+          access_token : user.accessToken
         }
+        console.log(formData)
 
         userAuth(serverRoute, formData);
       })

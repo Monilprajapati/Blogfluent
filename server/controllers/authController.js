@@ -95,6 +95,7 @@ export const signup = async (req, res) => {
 };
 
 export const googleAuth = async (req, res) => {
+  console.log("runn")
   let { access_token } = req.body;
   getAuth()
     .verifyIdToken(access_token)
@@ -134,6 +135,7 @@ export const googleAuth = async (req, res) => {
           .save()
           .then((u) => {
             user = u;
+            console.log(user)
           })
           .catch((err) => {
             return res.status(403).json({ error: err.message });
