@@ -2,11 +2,13 @@ import React from "react";
 import { useState } from "react";
 import InputTag from "../components/InputTag";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import authUser from "../services/auth";
+import { useContext } from "react";
+import { UserContext } from "../App";
 const UserAuthForm = ({ type }) => {
   const [formData, setFormData] = useState({
     fullname: "",
@@ -21,11 +23,16 @@ const UserAuthForm = ({ type }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     console.log(formData);
   };
+  let {
+    userAuth: { access_token },
+    setUserAuth,
+  } = useContext(UserContext);
 
   const userAuth = async (serverRoute, formData) => {
     const data = await authUser(serverRoute, formData);
     console.log("Data from userAuth ");
-    // console.log(data);
+    setUserAuth(data);
+    console.log(data);
     if (serverRoute === "signin") {
       if (data.error) {
         toast.error(data.error);
@@ -46,6 +53,7 @@ const UserAuthForm = ({ type }) => {
       }
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     e.preventDefault();
@@ -81,7 +89,9 @@ const UserAuthForm = ({ type }) => {
     }
   };
 
-  return (
+  return access_token ? (
+    <Navigate to="/" />
+  ) : (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
         <Toaster />

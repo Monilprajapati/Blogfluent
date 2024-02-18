@@ -1,4 +1,5 @@
 import axios from "axios";
+import { storeInSession } from "../common/session";
 
 const authUser = async (serverRoute, formData) => {
   const URL = import.meta.env.VITE_SERVER_URL;
@@ -9,6 +10,8 @@ const authUser = async (serverRoute, formData) => {
       formData
     );
     const data = await response.data;
+    storeInSession("user", JSON.stringify(data));
+    // console.log(access_token);
     console.log(data);
     return data;
   } catch ({ response }) {
