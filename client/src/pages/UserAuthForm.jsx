@@ -56,7 +56,7 @@ const UserAuthForm = ({ type }) => {
     }
   };
 
-  // Checking and validating inputs
+  // Checking and validating inputs and calling the Auth API
   const handleSubmit = (e) => {
     e.preventDefault();
     e.preventDefault();
