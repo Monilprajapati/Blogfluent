@@ -12,13 +12,17 @@ const Editor = () => {
     userAuth: { access_token },
   } = useContext(UserContext);
 
-  return access_token === null ? (
-    <Navigate to="/signin" />
-  ) : editorState == "editor" ? (
-    <BlogEditor/>
-  ) : (
-    <PublishForm/>
-  );
+  // return access_token === null ? (
+  // ) : editorState == "editor" ? (
+  //   <BlogEditor/>
+  // ) : (
+  //   <PublishForm/>
+  // );
+
+  if (!access_token) {
+    <Navigate to="/signin" />;
+  }
+  return <>{editorState == "editor" ? <BlogEditor /> : <PublishForm />}</>;
 };
 
 export default Editor;
