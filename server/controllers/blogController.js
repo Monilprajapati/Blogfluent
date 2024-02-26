@@ -1,5 +1,6 @@
 import generateUploadUrl from "../utils/generateUploadUrl.js";
 
+// Controller for uploading image to S3
 export const getUploadImageUrl = async (req, res) => {
   generateUploadUrl()
     .then((url) => {
