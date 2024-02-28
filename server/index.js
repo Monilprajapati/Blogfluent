@@ -15,12 +15,15 @@ const corsOptions = {
   origin: process.env.CLIENT_URL,
   optionsSuccessStatus: 200,
 };
+// Middlewares
 app.use(cors(corsOptions));
 
+// firebase admin
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountKey),
 });
 
+// s3
 export const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_KEY,
