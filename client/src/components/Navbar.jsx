@@ -13,7 +13,6 @@ import UserNavigationPanel from "./UserNavigationPanel";
 
 const Navbar = () => {
   const {
-    userAuth,
     userAuth: { access_token, profile_img },
   } = useContext(UserContext);
   const [search, setSearch] = useState(false);
@@ -29,6 +28,7 @@ const Navbar = () => {
     }
     , 200);
   }
+
   return (
     <>
       <nav className="navbar font-plusSans">
@@ -74,12 +74,11 @@ const Navbar = () => {
               >
                 <FiBell className="text-black text-2xl" />
               </Link>
-
               <div className="relative" onClick={handleUserNavPanel} onBlur={handleBlur}>
                 <button className="w-12 h-12 mt-1">
                   <img
                     src={profile_img}
-                    alt=""
+                    alt="userImage"
                     className="w-full h-full object-cover rounded-full"
                   />
                 </button>

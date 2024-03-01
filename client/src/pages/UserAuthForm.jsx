@@ -32,7 +32,7 @@ const UserAuthForm = ({ type }) => {
   // Calling APIS and checking the status
   const userAuth = async (serverRoute, formData) => {
     const data = await authUser(serverRoute, formData);
-    console.log("Data from userAuth ");
+    // console.log("Data from userAuth ");
     setUserAuth(data);
     console.log(data);
     if (serverRoute === "signin") {
@@ -97,12 +97,10 @@ const UserAuthForm = ({ type }) => {
 
     authWithGoogle()
       .then((user) => {
-        console.log(user)
         let serverRoute = "google-auth"
         let formData = {  
           access_token : user.accessToken
         }
-        console.log(formData)
 
         userAuth(serverRoute, formData);
       })

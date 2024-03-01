@@ -1,7 +1,3 @@
-POST http://localhost:5000/auth/signin
+GET http://localhost:5000/api/v1/blog/get-upload-url
 Content-Type: application/json
 
-{
-    "email": "kunal1@yahoo1.com",
-    "password": "Jon@1345"
-}

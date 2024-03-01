@@ -2,9 +2,11 @@ import { app } from "./app.js";
 import connectDB from "./db/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
-import admin from "firebase-admin"
-import {serviceAccountKey} from "./blog-fluent-firebase-adminsdk-mixb1-d6155942fd.js";
+import admin from "firebase-admin";
+import { serviceAccountKey } from "./blog-fluent-firebase-adminsdk-mixb1-d6155942fd.js";
 import authRoutes from "./routes/authRoutes.js";
+import publishBlogRoutes from "./routes/publishBlogRoutes.js";
+import aws from "aws-sdk";
 
 dotenv.config();
 const { DB_USERNAME, DB_PASSWORD } = process.env;
@@ -16,10 +18,19 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccountKey)
-})
+  credential: admin.credential.cert(serviceAccountKey),
+});
+
+export const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: process.env.AWS_REGION,
+});
+
 // routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/blog", publishBlogRoutes);
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
