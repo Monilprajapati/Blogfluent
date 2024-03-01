@@ -35,6 +35,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/blog", publishBlogRoutes);
 
 
+// Port and server 
 app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });
