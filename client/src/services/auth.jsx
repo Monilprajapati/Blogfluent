@@ -12,7 +12,6 @@ const authUser = async (serverRoute, formData) => {
     const data = await response.data;
     console.log(data)
     storeInSession("user", JSON.stringify(data));
-    // console.log(access_token);
     // console.log(data);
     return data;
   } catch (response) {
