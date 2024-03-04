@@ -5,24 +5,29 @@ import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
 import { uploadImage } from "../common/aws";
 import { useRef } from "react";
+import {Toaster, toast} from 'react-hot-toast';
 
 const BlogEditor = () => {
   let blogBannerRef = useRef();
 
   const handleBannerUpload = (e) => {
+
+    let loading = toast.loading('Uploading...');
     const img = e.target.files[0];
     console.log(img);
     if (img) {
-      console.log("Entered in If")
       uploadImage(img)
         .then((url) => {
           if (url) {
+            toast.dismiss(loading);
+            toast.success('Uploaded successfully');
             blogBannerRef.current.src = url;
-            console.log(url);
           }
         })
         .catch((error) => {
+          toast.dismiss(loading)
           console.log(error);
+          return toast.error('Failed to upload');
         });
     }
   };
@@ -44,6 +49,7 @@ const BlogEditor = () => {
 
       <AnimationWrapper>
         <section>
+          <Toaster/>
           <div className="mx-auto max-w-[900px] w-full">
             <div className="relative aspect-video bg-white hover:opacity-80 border-4 border-grey">
               <label htmlFor="uploadBanner">
