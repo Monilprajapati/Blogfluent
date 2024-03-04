@@ -3,11 +3,28 @@ import shortLogo from "../imgs/shortLogo.png";
 import defaultBanner from "../imgs/blog-banner.png";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/AnimationWrapper";
+import { uploadImage } from "../common/aws";
+import { useRef } from "react";
 
 const BlogEditor = () => {
+  let blogBannerRef = useRef();
+
   const handleBannerUpload = (e) => {
     const img = e.target.files[0];
-
+    console.log(img);
+    if (img) {
+      console.log("Entered in If")
+      uploadImage(img)
+        .then((url) => {
+          if (url) {
+            blogBannerRef.current.src = url;
+            console.log(url);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -30,7 +47,12 @@ const BlogEditor = () => {
           <div className="mx-auto max-w-[900px] w-full">
             <div className="relative aspect-video bg-white hover:opacity-80 border-4 border-grey">
               <label htmlFor="uploadBanner">
-                <img src={defaultBanner} className="z-20" alt="" />
+                <img
+                  ref={blogBannerRef}
+                  src={defaultBanner}
+                  className="z-20"
+                  alt=""
+                />
                 <input
                   type="file"
                   accept=".png, .jpg, .jpeg"

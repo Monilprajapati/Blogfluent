@@ -6,7 +6,7 @@ import admin from "firebase-admin";
 import { serviceAccountKey } from "./blog-fluent-firebase-adminsdk-mixb1-d6155942fd.js";
 import authRoutes from "./routes/authRoutes.js";
 import publishBlogRoutes from "./routes/publishBlogRoutes.js";
-import aws from "aws-sdk";
+import AWS from "aws-sdk";
 
 dotenv.config();
 const { DB_USERNAME, DB_PASSWORD } = process.env;
@@ -24,10 +24,10 @@ admin.initializeApp({
 });
 
 // s3
-export const s3 = new aws.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+export const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 // routes
