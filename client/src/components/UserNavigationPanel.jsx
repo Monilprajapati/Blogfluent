@@ -2,15 +2,14 @@ import React from "react";
 import AnimationWrapper from "../common/AnimationWrapper";
 import { Link } from "react-router-dom";
 import { MdEditDocument } from "react-icons/md";
-import { UserContext } from "../App";
-import { useContext } from "react";
+import { useUserContext } from "../contexts/userContext";
 import { removeFromSession } from "../common/session";
 
 const UserNavigationPanel = () => {
   const {
     setUserAuth,
     userAuth: { username },
-  } = useContext(UserContext);
+  } = useUserContext();
 
   const signOutUser = () => {
     removeFromSession("user");

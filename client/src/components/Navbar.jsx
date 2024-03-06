@@ -8,13 +8,13 @@ import shortLogo from "../imgs/shortLogo.png";
 import longLogo from "../imgs/longLogo.png";
 import { Outlet } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../App";
+import { useUserContext } from "../contexts/userContext";
 import UserNavigationPanel from "./UserNavigationPanel";
 
 const Navbar = () => {
   const {
     userAuth: { access_token, profile_img },
-  } = useContext(UserContext);
+  } = useUserContext();
   const [search, setSearch] = useState(false);
   const [userNavPanel, setUserNavPanel] = useState(false);
 

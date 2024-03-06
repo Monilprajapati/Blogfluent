@@ -5,12 +5,11 @@ import UserAuthForm from "./pages/UserAuthForm";
 import { createContext, useContext, useState } from "react";
 import { lookInSession } from "./common/session";
 import Editor from "./pages/editor.pages";
-
-export const UserContext = createContext();
+import { UserContextProvider } from "./contexts/userContext";
+import { useUserContext } from "./contexts/userContext";
 
 const App = () => {
-  const [userAuth, setUserAuth] = useState({});
-
+  const { userAuth, setUserAuth } = useUserContext();
   useEffect(() => {
     let userInSession = lookInSession("user");
     if (userInSession) {
@@ -21,7 +20,6 @@ const App = () => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userAuth, setUserAuth }}>
       <Routes>
         <Route path="/editor" element={<Editor />} />
         <Route path="/" element={<Navbar />}>
@@ -29,7 +27,6 @@ const App = () => {
           <Route path="signup" element={<UserAuthForm type="sign-up" />} />
         </Route>
       </Routes>
-    </UserContext.Provider>
   );
 };
 

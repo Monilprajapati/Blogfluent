@@ -7,8 +7,7 @@ import AnimationWrapper from "../common/AnimationWrapper";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import authUser from "../services/auth";
-import { useContext } from "react";
-import { UserContext } from "../App";
+import { useUserContext } from "../contexts/userContext";
 import { authWithGoogle } from "../common/firebase";
 const UserAuthForm = ({ type }) => {
   const [formData, setFormData] = useState({
@@ -27,7 +26,7 @@ const UserAuthForm = ({ type }) => {
   let {
     userAuth: { access_token },
     setUserAuth,
-  } = useContext(UserContext);
+  } = useUserContext();
 
   // Calling APIS and checking the status
   const userAuth = async (serverRoute, formData) => {
@@ -97,10 +96,10 @@ const UserAuthForm = ({ type }) => {
 
     authWithGoogle()
       .then((user) => {
-        let serverRoute = "google-auth"
-        let formData = {  
-          access_token : user.accessToken
-        }
+        let serverRoute = "google-auth";
+        let formData = {
+          access_token: user.accessToken,
+        };
 
         userAuth(serverRoute, formData);
       })
