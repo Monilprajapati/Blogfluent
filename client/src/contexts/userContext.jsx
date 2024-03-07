@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
   const [userAuth, setUserAuth] = useState({});
-
+  console.log(userAuth)
   return (
     <UserContext.Provider
       value={{

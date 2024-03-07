@@ -7,9 +7,10 @@ import { lookInSession } from "./common/session";
 import Editor from "./pages/editor.pages";
 import { UserContextProvider } from "./contexts/userContext";
 import { useUserContext } from "./contexts/userContext";
+import { EditorContextProvider } from "./contexts/blogContext";
 
 const App = () => {
-  const { userAuth, setUserAuth } = useUserContext();
+  const { setUserAuth } = useUserContext();
   useEffect(() => {
     let userInSession = lookInSession("user");
     if (userInSession) {
@@ -20,13 +21,20 @@ const App = () => {
   }, []);
 
   return (
-      <Routes>
-        <Route path="/editor" element={<Editor />} />
-        <Route path="/" element={<Navbar />}>
-          <Route path="signin" element={<UserAuthForm type="sign-in" />} />
-          <Route path="signup" element={<UserAuthForm type="sign-up" />} />
-        </Route>
-      </Routes>
+    <Routes>
+      <Route
+        path="/editor"
+        element={
+          <EditorContextProvider>
+            <Editor />
+          </EditorContextProvider>
+        }
+      />
+      <Route path="/" element={<Navbar />}>
+        <Route path="signin" element={<UserAuthForm type="sign-in" />} />
+        <Route path="signup" element={<UserAuthForm type="sign-up" />} />
+      </Route>
+    </Routes>
   );
 };
 

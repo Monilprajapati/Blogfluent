@@ -7,7 +7,6 @@ import { FiBell } from "react-icons/fi";
 import shortLogo from "../imgs/shortLogo.png";
 import longLogo from "../imgs/longLogo.png";
 import { Outlet } from "react-router-dom";
-import { useContext } from "react";
 import { useUserContext } from "../contexts/userContext";
 import UserNavigationPanel from "./UserNavigationPanel";
 
@@ -15,6 +14,7 @@ const Navbar = () => {
   const {
     userAuth: { access_token, profile_img },
   } = useUserContext();
+  console.log(profile_img)
   const [search, setSearch] = useState(false);
   const [userNavPanel, setUserNavPanel] = useState(false);
 
