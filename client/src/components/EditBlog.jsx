@@ -22,7 +22,7 @@ const BlogEditor = () => {
     setTextEditor(
       new EditorJS({
         holder: "textEditor",
-        data: "",
+        data: content,
         placeholder: "Start writing your blog...",
         tools: EDITOR_JS_TOOLS,
       })
