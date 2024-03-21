@@ -10,11 +10,12 @@ import { Outlet } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
 import UserNavigationPanel from "./UserNavigationPanel";
 
-const Navbar = () => {
+const Navbar = () => {  
   const {
     userAuth: { access_token, profile_img },
   } = useUserContext();
-  console.log(profile_img)
+  // console.log(access_token)
+  // console.log(profile_img)
   const [search, setSearch] = useState(false);
   const [userNavPanel, setUserNavPanel] = useState(false);
 

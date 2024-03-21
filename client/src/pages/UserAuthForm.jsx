@@ -33,7 +33,7 @@ const UserAuthForm = ({ type }) => {
     const data = await authUser(serverRoute, formData);
     // console.log("Data from userAuth ");
     setUserAuth(data);
-    console.log(data);
+    // console.log(data);
     if (serverRoute === "signin") {
       if (data.error) {
         toast.error(data.error);
@@ -54,7 +54,6 @@ const UserAuthForm = ({ type }) => {
       }
     }
   };
-
   // Checking and validating inputs and calling the Auth API
   const handleSubmit = (e) => {
     e.preventDefault();
