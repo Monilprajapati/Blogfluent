@@ -21,7 +21,7 @@ const BlogEditor = () => {
   useEffect(() => {
     setTextEditor(
       new EditorJS({
-        holder: "textEditor",
+        holderId: "textEditor",
         data: content,
         placeholder: "Start writing your blog...",
         tools: EDITOR_JS_TOOLS,
@@ -31,19 +31,22 @@ const BlogEditor = () => {
 
   const handlePublihsEvent = () => {
     // Here is basic validations
-    if (!banner.length) return toast.error("Banner is required");
-    if (!title.length) return toast.error("Title is required");
+    // if (!banner.length) return toast.error("Banner is required");
+    // if (!title.length) return toast.error("Title is required");
     // if (!tags.length) return toast.error("Tags are required");
     // if (!des.length) return toast.error("Description is required");
 
+    setEditorState("publish");
+
     if (textEditor.isReady) {
+      console.log("Saving...");
       textEditor.save().then((data) => {
-        console.log(data);
+        console.log("Saved data:", data);
         if (data.blocks.length) {
           setBlog(
             (prev) => ({
               ...prev,
-              content: JSON.stringify(data),
+              content: data,
             }),
             console.log("content updated")
           );
@@ -140,7 +143,7 @@ const BlogEditor = () => {
               </label>
             </div>
             <textarea
-            defaultValue={title}
+              defaultValue={title}
               placeholder="Blog Title"
               className="text-4xl font-medium w-full h-20 outline-none resize-none  mt-10 leading-tight placeholder:opacity-40"
               onKeyDown={handleTitleKeyDown}

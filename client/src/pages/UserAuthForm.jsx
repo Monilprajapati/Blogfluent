@@ -57,7 +57,6 @@ const UserAuthForm = ({ type }) => {
   // Checking and validating inputs and calling the Auth API
   const handleSubmit = (e) => {
     e.preventDefault();
-    e.preventDefault();
 
     let serverRoute = type === "sign-in" ? "signin" : "signup";
 
