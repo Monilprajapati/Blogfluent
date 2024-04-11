@@ -13,7 +13,7 @@ const AnimationWrapper = ({
     <AnimatePresence>
       <motion.div
         initial={initial}
-        animate={animate}a
+        animate={animate}
         transition={transition}
         key={keyValue}
       >

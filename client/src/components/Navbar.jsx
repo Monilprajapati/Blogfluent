@@ -10,12 +10,12 @@ import { Outlet } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
 import UserNavigationPanel from "./UserNavigationPanel";
 
-const Navbar = () => {  
+const Navbar = () => {
   const {
     userAuth: { access_token, profile_img },
   } = useUserContext();
   // console.log(access_token)
-  // console.log(profile_img)
+  console.log(profile_img);
   const [search, setSearch] = useState(false);
   const [userNavPanel, setUserNavPanel] = useState(false);
 
@@ -26,9 +26,8 @@ const Navbar = () => {
   const handleBlur = () => {
     setTimeout(() => {
       setUserNavPanel(false);
-    }
-    , 200);
-  }
+    }, 200);
+  };
 
   return (
     <>
@@ -75,7 +74,11 @@ const Navbar = () => {
               >
                 <FiBell className="text-black text-2xl" />
               </Link>
-              <div className="relative" onClick={handleUserNavPanel} onBlur={handleBlur}>
+              <div
+                className="relative"
+                onClick={handleUserNavPanel}
+                onBlur={handleBlur}
+              >
                 <button className="w-12 h-12 mt-1">
                   <img
                     src={profile_img}
