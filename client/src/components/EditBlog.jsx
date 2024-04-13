@@ -19,14 +19,16 @@ const BlogEditor = () => {
   } = useEditorContext();
 
   useEffect(() => {
-    setTextEditor(
-      new EditorJS({
-        holderId: "textEditor",
-        data: content,
-        placeholder: "Start writing your blog...",
-        tools: EDITOR_JS_TOOLS,
-      })
-    );
+    if (!textEditor.isReady) {
+      setTextEditor(
+        new EditorJS({
+          holderId: "textEditor",
+          data: content,
+          placeholder: "Start writing your blog...",
+          tools: EDITOR_JS_TOOLS,
+        })
+      );
+    }
   }, []);
 
   const handlePublihsEvent = () => {
@@ -48,8 +50,6 @@ const BlogEditor = () => {
         }
       });
     }
-
-   
   };
 
   const handleBannerUpload = (e) => {
@@ -96,6 +96,10 @@ const BlogEditor = () => {
     }));
   };
 
+  const handleSaveDraft = () => {
+    console.log("Draft saved");
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -108,7 +112,9 @@ const BlogEditor = () => {
         </p>
 
         <div className="flex gap-4 ml-auto">
-          <button className="btn-light py-2">Save draft</button>
+          <button className="btn-light py-2" onClick={handleSaveDraft}>
+            Save draft
+          </button>
           <button className="btn-dark py-2" onClick={handlePublihsEvent}>
             Publish
           </button>
