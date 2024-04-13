@@ -8,15 +8,22 @@ import { Toaster, toast } from "react-hot-toast";
 import { useEditorContext } from "../contexts/blogContext";
 import EditorJS from "@editorjs/editorjs";
 import { EDITOR_JS_TOOLS } from "./tools.component";
+import createBlog from "../services/blog";
+import { useUserContext } from "../contexts/userContext";
+import { useNavigate } from "react-router-dom";
 
 const BlogEditor = () => {
   const {
-    blog: { title, banner, content },
+    blog: { title, banner, content, des, tags },
     setBlog,
     textEditor,
     setTextEditor,
     setEditorState,
   } = useEditorContext();
+  const {
+    userAuth: { access_token },
+  } = useUserContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!textEditor.isReady) {
@@ -96,8 +103,49 @@ const BlogEditor = () => {
     }));
   };
 
-  const handleSaveDraft = () => {
-    console.log("Draft saved");
+  const handleSaveDraft = async (e) => {
+    if (e.target.disabled) {
+      return;
+    }
+
+    if (!title.length) return toast.error("Title is required to save as draft");
+
+    if (textEditor.isReady) {
+      textEditor.save().then((content) => {
+        let data = {
+          title,
+          des,
+          banner,
+          tags,
+          content,
+          draft: true,
+        };
+
+        let loading = toast.loading("Saving draft..");
+        e.target.disabled = true;
+        createBlog(data, access_token)
+          .then(() => {
+            e.target.disabled = false;
+            toast.dismiss(loading);
+            toast.success("Draft saved successfully");
+
+            setTimeout(() => {
+              navigate("/");
+              setBlog({
+                title: "",
+                des: "",
+                banner: "",
+                tags: [],
+                content: [],
+              });
+            }, 1000);
+          })
+          .catch((res) => {
+            toast.error(res.data.error);
+            e.target.disabled = false;
+          });
+      });
+    }
   };
 
   return (

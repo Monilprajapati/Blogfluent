@@ -18,32 +18,35 @@ export const getUploadImageUrl = async (req, res) => {
 export const publishBlog = async (req, res) => {
   const { title, des, banner, tags, content, draft } = req.body;
   let authorId = req.user;
+  let lowercaseTags;
   console.log(authorId, "authorId");
-  if (!title || !des || !banner || !tags || !content) {
-    return res.status(400).json({ error: "All fields are required" });
+  if (!title.length) {
+    return res.status(400).json({ error: "Title is required" });
   }
 
-  if (!banner.length) {
-    return res.status(400).json({ error: "Banner is required" });
-  }
+  if (!draft) {
+    if (!banner.length) {
+      return res.status(400).json({ error: "Banner is required" });
+    }
 
-  if (!des.length > 200) {
-    return res
-      .status(400)
-      .json({ error: "Description should be less than 200 characters" });
-  }
+    if (!des.length > 200) {
+      return res
+        .status(400)
+        .json({ error: "Description should be less than 200 characters" });
+    }
 
-  if (!content.blocks.length) {
-    return res.status(400).json({ error: "Content is required" });
-  }
+    if (!content.blocks.length) {
+      return res.status(400).json({ error: "Content is required" });
+    }
 
-  if (!tags.length || tags.length > 10) {
-    return res
-      .status(400)
-      .json({ error: "Tags are required and should be less than 10" });
+    if (!tags.length || tags.length > 10) {
+      return res
+        .status(400)
+        .json({ error: "Tags are required and should be less than 10" });
+    } else {
+      lowercaseTags = tags.map((tag) => tag.toLowerCase());
+    }
   }
-
-  let lowercaseTags = tags.map((tag) => tag.toLowerCase());
 
   let blog_id =
     title
