@@ -10,7 +10,6 @@ const Editor = () => {
   const {
     userAuth: { access_token },
   } = useUserContext();
-  console.log(editorState);
   return (
     <>
       {access_token === null ? (

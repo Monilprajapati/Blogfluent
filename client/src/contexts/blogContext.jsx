@@ -13,7 +13,6 @@ const EditorContextProvider = ({ children }) => {
       personal_info: {},
     },
   });
-  console.log(blog.content)
 
   const [textEditor, setTextEditor] = useState({
     isReady: false,
@@ -21,7 +20,6 @@ const EditorContextProvider = ({ children }) => {
 
   const [editorState, setEditorState] = useState("editor");
 
-  console.log(blog);
   return ( 
     <EditorContext.Provider
       value={{

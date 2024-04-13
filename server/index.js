@@ -7,6 +7,7 @@ import { serviceAccountKey } from "./blog-fluent-firebase-adminsdk-mixb1-d615594
 import authRoutes from "./routes/authRoutes.js";
 import publishBlogRoutes from "./routes/publishBlogRoutes.js";
 import AWS from "aws-sdk";
+import bodyParser from "body-parser";
 
 dotenv.config();
 const { DB_USERNAME, DB_PASSWORD } = process.env;
@@ -17,7 +18,7 @@ const corsOptions = {
 };
 // Middlewares
 app.use(cors(corsOptions));
-
+app.use(bodyParser.json());
 // firebase admin
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountKey),

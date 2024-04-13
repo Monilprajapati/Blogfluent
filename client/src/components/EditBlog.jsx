@@ -11,7 +11,7 @@ import { EDITOR_JS_TOOLS } from "./tools.component";
 
 const BlogEditor = () => {
   const {
-    blog: { title, banner, content, tags, des },
+    blog: { title, banner, content },
     setBlog,
     textEditor,
     setTextEditor,
@@ -31,37 +31,30 @@ const BlogEditor = () => {
 
   const handlePublihsEvent = () => {
     // Here is basic validations
-    // if (!banner.length) return toast.error("Banner is required");
-    // if (!title.length) return toast.error("Title is required");
-    // if (!tags.length) return toast.error("Tags are required");
-    // if (!des.length) return toast.error("Description is required");
-
-    setEditorState("publish");
+    if (!banner.length) return toast.error("Banner is required");
+    if (!title.length) return toast.error("Title is required");
 
     if (textEditor.isReady) {
-      console.log("Saving...");
       textEditor.save().then((data) => {
         console.log("Saved data:", data);
         if (data.blocks.length) {
-          setBlog(
-            (prev) => ({
-              ...prev,
-              content: data,
-            }),
-            console.log("content updated")
-          );
+          setBlog((prev) => ({
+            ...prev,
+            content: data,
+          }));
           setEditorState("publish");
         } else {
           return toast.error("Write something in the blog to publish");
         }
       });
     }
+
+   
   };
 
   const handleBannerUpload = (e) => {
     let loading = toast.loading("Uploading...");
     const img = e.target.files[0];
-    console.log(img);
     if (img) {
       uploadImage(img)
         .then((url) => {

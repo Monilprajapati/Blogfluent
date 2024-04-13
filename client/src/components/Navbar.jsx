@@ -15,7 +15,6 @@ const Navbar = () => {
     userAuth: { access_token, profile_img },
   } = useUserContext();
   // console.log(access_token)
-  console.log(profile_img);
   const [search, setSearch] = useState(false);
   const [userNavPanel, setUserNavPanel] = useState(false);
 

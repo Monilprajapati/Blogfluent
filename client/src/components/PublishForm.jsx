@@ -3,18 +3,26 @@ import { useEditorContext } from "../contexts/blogContext";
 import AnimationWrapper from "../common/AnimationWrapper";
 import toast, { Toaster } from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
+import createBlog from "../services/blog";
+import { validateBlogFields } from "../utils/validateBlogFields";
 import Tags from "./Tags";
+import { useUserContext } from "../contexts/userContext";
+import { useNavigate } from "react-router-dom";
 
 const PublishForm = () => {
   let characterLimit = 200;
-  const {
+  let {
     blog,
-    blog: { title, des, banner, tags },
+    blog: { title, des, banner, tags, content },
     setBlog,
     setEditorState,
   } = useEditorContext();
 
   let tagLimit = 5;
+  const navigate = useNavigate();
+  const {
+    userAuth: { access_token },
+  } = useUserContext(); 
   // Close the publish form
   const handleCloseEvent = () => {
     setEditorState("editor");
@@ -58,6 +66,50 @@ const PublishForm = () => {
         toast.error(`You can only add ${tagLimit} tags`);
       }
     }
+  };
+
+  const publishBlog = async (e) => {
+    if (e.target.disabled) {
+      return;
+    }
+
+    let data = {
+      title,
+      des,
+      banner,
+      tags,
+      content,
+      draft: false,
+    };
+
+    const validation = validateBlogFields(data);
+    if (validation.error) {
+      return toast.error(validation.message);
+    }
+
+    let loading = toast.loading("Publishing..");
+    e.target.disabled = true;
+    createBlog(data, access_token)
+      .then(() => {
+        e.target.disabled = false;
+        toast.dismiss(loading);
+        toast.success("Blog published successfully");
+
+        setTimeout(() => {
+          navigate("/");
+          setBlog({
+            title: "",
+            des: "",
+            banner: "",
+            tags: [],
+            content: [],
+          });
+        }, 1000);
+      })
+      .catch((res) => {
+        toast.error(res.data.error);
+        e.target.disabled = false;
+      });
   };
 
   return (
@@ -112,17 +164,24 @@ const PublishForm = () => {
             Topis (Will help you to get the reach easily)
           </p>
 
-          <div className="relative input-box pl-2 py-2 pb-4">
+          <div className="relative input-box px-3 pt-3 py-2 pb-4">
             <input
               type="text"
               placeholder="Type your topic here"
-              className="sticky input-box bg-white top-0 left-0 pl-4 mb-3 focus:bg-white"
+              className="sticky input-box bg-white top-0 left-0 pl-4 mb-2 focus:bg-white placeholder:opacity-50"
               onKeyDown={handleAddTag}
             />
             {tags.map((tag, index) => (
               <Tags key={index} tagIndex={index} tag={tag} />
             ))}
           </div>
+          <p className="mt-1 mb-4 text-dark-grey text-right">
+            {tagLimit - tags.length} tags left
+          </p>
+
+          <button className="btn-dark px-8" onClick={publishBlog}>
+            Publish
+          </button>
         </div>
       </section>
     </AnimationWrapper>
