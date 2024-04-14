@@ -29,4 +29,16 @@ export const getNewBlogs = async () => {
   }
 };
 
+export const getTrendingBlogs = async () => {
+  const URL = import.meta.env.VITE_SERVER_URL;
+
+  try {
+    const response = await axios.get(`${URL}/api/v1/blog/trending-blogs`);
+    const res = await response.data.blogs;
+    return res;
+  } catch ({ response }) {
+    return response;
+  }
+};
+
 export default createBlog;

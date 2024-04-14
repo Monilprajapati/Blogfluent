@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
 import AnimationWrapper from "../common/AnimationWrapper";
 import InPageNavigation from "../components/InPageNavigation";
-import { getNewBlogs } from "../services/blog";
+import { getNewBlogs, getTrendingBlogs } from "../services/blog";
 import Loader from "../components/Loader";
 import BlogCard from "../components/BlogCard";
+import MinimalBlogCard from "../components/MinimalBlogCard";
 
 const HomePage = () => {
   const [blogs, setBlogs] = useState(null);
+  const [trendingBlogs, setTrendingBlogs] = useState(null);
 
+  const fetchBlogs = async () => {
+    const blogs = await getNewBlogs();
+    setBlogs(blogs);
+  };
+
+  const fetchTrendingBlogs = async () => {
+    const blogs = await getTrendingBlogs();
+    setTrendingBlogs(blogs);
+  };
   useEffect(() => {
-    const fetchBlogs = async () => {
-      const blogs = await getNewBlogs();
-      setBlogs(blogs);
-    };
-
     fetchBlogs();
+    fetchTrendingBlogs();
   }, []);
 
   console.log(blogs);
+  console.log(trendingBlogs)
   return (
     <AnimationWrapper>
       <section className="h-cover flex justify-center gap-10">
@@ -48,7 +56,29 @@ const HomePage = () => {
                 })
               )}
             </>
-            <h1>Trending Blogs</h1>
+            {
+              trendingBlogs === null ? (
+                <Loader />
+              ) : (
+                trendingBlogs.map((blog, index) => {
+                  return (
+                    <AnimationWrapper
+                      key={index}
+                      transition={{
+                        duration: 1,
+                        delay: index * 0.1,
+                      }}
+                    >
+                      <MinimalBlogCard
+                      blog={blog}
+                      index={index}
+                      />
+                    </AnimationWrapper>
+                  );
+                })
+              )
+            
+            }
           </InPageNavigation>
         </div>
         <div></div>
