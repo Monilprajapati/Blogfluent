@@ -10,6 +10,6 @@ const blogRoutes = Router();
 
 blogRoutes.get("/get-upload-url", getUploadImageUrl);
 blogRoutes.post("/create-blog", verifyJWT, publishBlog);
-blogRoutes.get("latest-blogs", getLatestBlogs);
+blogRoutes.get("/latest-blogs", getLatestBlogs);
 
 export default blogRoutes;

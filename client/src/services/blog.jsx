@@ -9,11 +9,22 @@ const createBlog = async (data, token) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    
     });
     const res = await response.data;
     return res;
-  } catch ({response} ) {
+  } catch ({ response }) {
+    return response;
+  }
+};
+
+export const getNewBlogs = async () => {
+  const URL = import.meta.env.VITE_SERVER_URL;
+
+  try {
+    const response = await axios.get(`${URL}/api/v1/blog/latest-blogs`);
+    const res = await response.data.blogs;
+    return res;
+  } catch ({ response }) {
     return response;
   }
 };
