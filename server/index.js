@@ -5,7 +5,7 @@ import cors from "cors";
 import admin from "firebase-admin";
 import { serviceAccountKey } from "./blog-fluent-firebase-adminsdk-mixb1-d6155942fd.js";
 import authRoutes from "./routes/authRoutes.js";
-import publishBlogRoutes from "./routes/publishBlogRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 import AWS from "aws-sdk";
 import bodyParser from "body-parser";
 
@@ -33,7 +33,7 @@ export const s3 = new AWS.S3({
 
 // routes
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/blog", publishBlogRoutes);
+app.use("/api/v1/blog", blogRoutes);
 
 
 // Port and server 

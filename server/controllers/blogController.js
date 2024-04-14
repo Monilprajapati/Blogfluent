@@ -15,6 +15,7 @@ export const getUploadImageUrl = async (req, res) => {
     });
 };
 
+// Controller for publishing a blog
 export const publishBlog = async (req, res) => {
   const { title, des, banner, tags, content, draft } = req.body;
   let authorId = req.user;
@@ -85,6 +86,25 @@ export const publishBlog = async (req, res) => {
             .status(500)
             .json({ error: "Failed to update the total number of post" });
         });
+    })
+    .catch((error) => {
+      return res.status(500).json({ error: error.message });
+    });
+};
+
+// Controller for getting latest blogs
+export const getLatestBlogs = async (req, res) => {
+  let maxlimit = 5;
+  Blog.find({ draft: false })
+    .populate(
+      "author",
+      "personal_info.username  personal_info.profile_img personal_info.fullname -_id"
+    )
+    .sort({ publishedAt: -1 })
+    .select("blog_id title des banner activity tags publishedAt -_id")
+    .limit(maxlimit)
+    .then((blogs) => {
+      return res.status(200).json({ blogs });
     })
     .catch((error) => {
       return res.status(500).json({ error: error.message });
