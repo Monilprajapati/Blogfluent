@@ -14,7 +14,7 @@ const BlogCard = ({ content, author }) => {
   } = content;
 
   let { fullname, profile_img, username } = author;
-
+  console.log(profile_img)
   return (
     <Link
     to={`blog/${id}`}

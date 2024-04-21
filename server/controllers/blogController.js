@@ -131,3 +131,28 @@ export const getTredingBlogs = async (req, res) => {
       return res.status(500).json({ error: error.message });
     });
 };
+
+export const searchBlog = async (req, res) => {
+  let { tag } = req.body;
+
+  let findQuery = {
+    tags: tag,
+    draft: false,
+  };
+
+  let maxlimit = 5;
+  Blog.find(findQuery)
+    .populate(
+      "author",
+      "personal_info.username  personal_info.profile_img personal_info.fullname -_id"
+    )
+    .sort({ publishedAt: -1 })
+    .select("blog_id title des banner activity tags publishedAt -_id")
+    .limit(maxlimit)
+    .then((blogs) => {
+      return res.status(200).json({ blogs });
+    })
+    .catch((error) => {
+      return res.status(500).json({ error: error.message });
+    });
+};

@@ -3,7 +3,7 @@ import { useEditorContext } from "../contexts/blogContext";
 import AnimationWrapper from "../common/AnimationWrapper";
 import toast, { Toaster } from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
-import createBlog from "../services/blog";
+import {createBlog} from "../services/blog";
 import { validateBlogFields } from "../utils/validateBlogFields";
 import Tags from "./Tags";
 import { useUserContext } from "../contexts/userContext";

@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 
+export let activeTab;
+export let activeTabLineRef;
+
 const InPageNavigation = ({
   routes,
   defaultActiveIndex = 0,
   defaultHidden = [],
   children,
 }) => {
-  let activeTab = useRef();
-  let activeTabLineRef = useRef();
+  activeTab = useRef();
+  activeTabLineRef = useRef();
   const [inPageNavIndex, setInPageNavIndex] = useState(defaultActiveIndex);
 
   const changePageState = (btn, i) => {

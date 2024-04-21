@@ -8,7 +8,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { useEditorContext } from "../contexts/blogContext";
 import EditorJS from "@editorjs/editorjs";
 import { EDITOR_JS_TOOLS } from "./tools.component";
-import createBlog from "../services/blog";
+import {createBlog} from "../services/blog";
 import { useUserContext } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
 

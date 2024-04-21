@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const createBlog = async (data, token) => {
+export const createBlog = async (data, token) => {
   const URL = import.meta.env.VITE_SERVER_URL;
 
   try {
@@ -41,4 +41,16 @@ export const getTrendingBlogs = async () => {
   }
 };
 
-export default createBlog;
+export const getBlogsByTags = async (pageState) => {
+  const URL = import.meta.env.VITE_SERVER_URL;
+
+  try {
+    const response = await axios.post(`${URL}/api/v1/blog/search-blogs`, {
+      tag: pageState,
+    });
+    const res = await response.data.blogs;
+    return res;
+  } catch ({ response }) {
+    return response;
+  }
+};
