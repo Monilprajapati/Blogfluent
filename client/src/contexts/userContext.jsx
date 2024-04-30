@@ -20,7 +20,7 @@ const useUserContext = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
     throw new Error(
-      "useUserContext must be a UserContextProvider. Make sure the component is wrapped in UserContextProvider"
+      "useUserContext must be within a UserContextProvider. Make sure the component is wrapped in UserContextProvider"
     );
   }
   return context;
