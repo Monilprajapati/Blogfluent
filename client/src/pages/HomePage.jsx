@@ -175,7 +175,7 @@ const HomePage = () => {
                   );
                 })
               ) : (
-                <NoData message="No Trending blogs found" />
+                <NoData message="No Trending blog are there right now" />
               )}
             </div>
           </div>
